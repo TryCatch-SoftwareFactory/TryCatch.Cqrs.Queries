@@ -16,14 +16,14 @@ namespace TryCatch.Cqrs.Queries
         where TEntity : class
     {
         /// <summary>
-        /// Gets the offset to be used in the query.
+        /// Gets or sets the offset to be used in the query.
         /// </summary>
-        public int Offset { get; }
+        public int Offset { get; protected set; }
 
         /// <summary>
-        /// Gets the size of page to be used in the query.
+        /// Gets or sets the size of page to be used in the query.
         /// </summary>
-        public int Limit { get; }
+        public int Limit { get; protected set; }
 
         /// <summary>
         /// Gets a value indicating whether the query must be ordered as ascending.

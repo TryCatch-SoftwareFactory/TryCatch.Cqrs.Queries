@@ -26,7 +26,7 @@ namespace TryCatch.Cqrs.Queries.GetCount
         protected GetCountQueryHandler(ILinqQueryRepository<TEntity> repository, IResultBuilder<long> builder)
         {
             ArgumentsValidator.ThrowIfIsNull(repository, nameof(repository));
-            ArgumentsValidator.ThrowIfIsNull(repository, nameof(builder));
+            ArgumentsValidator.ThrowIfIsNull(builder, nameof(builder));
             this.Repository = repository;
             this.Builder = builder;
         }

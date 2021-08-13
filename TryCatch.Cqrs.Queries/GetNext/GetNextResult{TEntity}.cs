@@ -25,8 +25,8 @@ namespace TryCatch.Cqrs.Queries.GetNext
         public GetNextResult(IEnumerable<TEntity> items, int offset, int limit)
         {
             ArgumentsValidator.ThrowIfIsNull(items, nameof(items));
-            ArgumentsValidator.ThrowIfIsLessThan(0, offset);
-            ArgumentsValidator.ThrowIfIsLessThan(0, limit);
+            ArgumentsValidator.ThrowIfIsLessThan(1, offset);
+            ArgumentsValidator.ThrowIfIsLessThan(1, limit);
 
             this.Items = items;
             this.Offset = offset;

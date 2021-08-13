@@ -27,7 +27,7 @@ namespace TryCatch.Cqrs.Queries.GetEntity
         protected GetEntityQueryHandler(ILinqQueryRepository<TEntity> repository, IResultBuilder<TEntity> builder)
         {
             ArgumentsValidator.ThrowIfIsNull(repository, nameof(repository));
-            ArgumentsValidator.ThrowIfIsNull(repository, nameof(builder));
+            ArgumentsValidator.ThrowIfIsNull(builder, nameof(builder));
             this.Repository = repository;
             this.Builder = builder;
         }

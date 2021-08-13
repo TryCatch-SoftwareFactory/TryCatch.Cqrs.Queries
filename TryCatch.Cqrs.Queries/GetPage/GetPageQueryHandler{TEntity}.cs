@@ -26,7 +26,7 @@ namespace TryCatch.Cqrs.Queries.Handlers
         protected GetPageQueryHandler(ILinqQueryRepository<TEntity> repository, IPageResultBuilder<TEntity> builder)
         {
             ArgumentsValidator.ThrowIfIsNull(repository, nameof(repository));
-            ArgumentsValidator.ThrowIfIsNull(repository, nameof(builder));
+            ArgumentsValidator.ThrowIfIsNull(builder, nameof(builder));
             this.Repository = repository;
             this.Builder = builder;
         }
