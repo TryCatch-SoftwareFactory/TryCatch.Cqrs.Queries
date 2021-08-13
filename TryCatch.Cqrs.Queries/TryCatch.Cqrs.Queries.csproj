@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>0.1.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Alfonso Segura</Authors>
+    <Company>TryCatch Software Factory</Company>
+    <Product>TryCatch.Cqrs.Lightweight.Queries</Product>
+    <Copyright>Copyright (c) 2021 TryCatch Software Factory</Copyright>
+    <Description>CQRS Lightweight common queries components for .Net Core projects</Description>
+    <PackageProjectUrl>https://github.com/TryCatch-SoftwareFactory/TryCatch.Cqrs.Queries</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TryCatch-SoftwareFactory/TryCatch.Cqrs.Queries.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>cqrs .netcore cqrs-pattern cqrs-queries</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
