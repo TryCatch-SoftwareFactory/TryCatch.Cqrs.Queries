@@ -1,4 +1,4 @@
-﻿// <copyright file="GetEntityQueryHandler{TEntity}.cs" company="TryCatch Software Factory">
+﻿// <copyright file="GetEntityQueryHandler{TEntity,TQueryObject}.cs" company="TryCatch Software Factory">
 // Copyright © TryCatch Software Factory All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 // </copyright>
@@ -16,19 +16,27 @@ namespace TryCatch.Cqrs.Queries.Linq
     /// Standard get entity query handler.
     /// </summary>
     /// <typeparam name="TEntity">Type of entity.</typeparam>
-    public abstract class GetEntityQueryHandler<TEntity> : IQueryHandler<QueryObjectBase<TEntity>, Result<TEntity>>
+    /// <typeparam name="TQueryObject">Type of query object.</typeparam>
+    public abstract class GetEntityQueryHandler<TEntity, TQueryObject> : IQueryHandler<TQueryObject, Result<TEntity>>
         where TEntity : class
+        where TQueryObject : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GetEntityQueryHandler{TEntity}"/> class.
+        /// Initializes a new instance of the <see cref="GetEntityQueryHandler{TEntity,TQueryObject}"/> class.
         /// </summary>
         /// <param name="repository">A <see cref="ILinqQueryRepository{TEntity}"/> reference to the repository.</param>
+        /// <param name="factory">A <see cref="IQueryExpressionFactory{TEntity}"/> reference to the expression factory.</param>
         /// <param name="builder">A <see cref="IResultBuilder{TEntity}"/> reference to the result builder.</param>
-        protected GetEntityQueryHandler(ILinqQueryRepository<TEntity> repository, IResultBuilder<TEntity> builder)
+        protected GetEntityQueryHandler(
+            ILinqQueryRepository<TEntity> repository,
+            IQueryExpressionFactory<TEntity> factory,
+            IResultBuilder<TEntity> builder)
         {
             ArgumentsValidator.ThrowIfIsNull(repository, nameof(repository));
+            ArgumentsValidator.ThrowIfIsNull(factory, nameof(factory));
             ArgumentsValidator.ThrowIfIsNull(builder, nameof(builder));
             this.Repository = repository;
+            this.Factory = factory;
             this.Builder = builder;
         }
 
@@ -38,20 +46,25 @@ namespace TryCatch.Cqrs.Queries.Linq
         protected ILinqQueryRepository<TEntity> Repository { get; }
 
         /// <summary>
+        /// Gets the current expression factory.
+        /// </summary>
+        protected IQueryExpressionFactory<TEntity> Factory { get; }
+
+        /// <summary>
         /// Gets the current reference to the result builder.
         /// </summary>
         protected IResultBuilder<TEntity> Builder { get; }
 
         /// <inheritdoc/>
         public async virtual Task<Result<TEntity>> Execute(
-            QueryObjectBase<TEntity> queryObject,
+            TQueryObject queryObject,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             ArgumentsValidator.ThrowIfIsNull(queryObject, nameof(queryObject));
 
-            var where = queryObject.GetQuery();
+            var where = this.Factory.GetSpec(queryObject);
 
             var entity = await this.Repository
                 .GetAsync(where, cancellationToken)
@@ -59,7 +72,7 @@ namespace TryCatch.Cqrs.Queries.Linq
 
             if (entity is default(TEntity))
             {
-                throw new EntityNotFoundException($"Not found entity with criterias: {where}");
+                throw new EntityNotFoundException($"Not found entity with criterias: {typeof(TQueryObject).Name}");
             }
 
             return this.Builder

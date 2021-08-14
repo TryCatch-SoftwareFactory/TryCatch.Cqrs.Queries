@@ -10,8 +10,8 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Linq
 
     public class GetNextFlightsQueryHandler : GetNextQueryHandler<Flight>
     {
-        public GetNextFlightsQueryHandler(ILinqQueryRepository<Flight> repository)
-            : base(repository)
+        public GetNextFlightsQueryHandler(ILinqQueryRepository<Flight> repository, IFlightsQueryFactory factory)
+            : base(repository, factory)
         {
         }
     }

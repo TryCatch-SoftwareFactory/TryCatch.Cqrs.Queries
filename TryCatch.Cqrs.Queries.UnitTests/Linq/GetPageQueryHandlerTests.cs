@@ -19,6 +19,8 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
 
     public class GetPageQueryHandlerTests
     {
+        private readonly IFlightsQueryFactory factory;
+
         private readonly ILinqQueryRepository<Flight> repository;
 
         private readonly IPageResultBuilder<Flight> builder;
@@ -28,8 +30,9 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
         public GetPageQueryHandlerTests()
         {
             this.repository = Substitute.For<ILinqQueryRepository<Flight>>();
+            this.factory = new FlightsQueryFactory();
             this.builder = new PageResultBuilder<Flight>();
-            this.sut = new GetFlightsPageQueryHandler(this.repository, this.builder);
+            this.sut = new GetFlightsPageQueryHandler(this.repository, this.factory, this.builder);
         }
 
         [Fact]
@@ -39,7 +42,20 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
             ILinqQueryRepository<Flight> repository = null;
 
             // Act
-            Action act = () => _ = new GetFlightsPageQueryHandler(repository, this.builder);
+            Action act = () => _ = new GetFlightsPageQueryHandler(repository, this.factory, this.builder);
+
+            // Asserts
+            act.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void Construct_without_factory()
+        {
+            // Arrange
+            IFlightsQueryFactory factory = null;
+
+            // Act
+            Action act = () => _ = new GetFlightsPageQueryHandler(this.repository, factory, this.builder);
 
             // Asserts
             act.Should().Throw<ArgumentNullException>();
@@ -52,7 +68,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
             IPageResultBuilder<Flight> builder = null;
 
             // Act
-            Action act = () => _ = new GetFlightsPageQueryHandler(this.repository, builder);
+            Action act = () => _ = new GetFlightsPageQueryHandler(this.repository, this.factory, builder);
 
             // Asserts
             act.Should().Throw<ArgumentNullException>();
@@ -95,9 +111,11 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
                 .GetCountAsync(null, Arg.Any<CancellationToken>())
                 .Returns(count);
 
+            var query = this.factory.GetSpec(queryObject);
+
             this.repository
                 .GetCountAsync(
-                    Arg.Is(queryObject.GetQuery()),
+                    Arg.Is(query),
                     Arg.Any<CancellationToken>())
                 .Returns(count);
 

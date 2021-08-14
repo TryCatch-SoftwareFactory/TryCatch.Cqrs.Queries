@@ -7,7 +7,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Specs
 {
     using TryCatch.Cqrs.Queries.Specs;
 
-    public class GetFlightsPageQueryObject : GetPageQueryObject<Flight>
+    public class GetFlightsPageQueryObject : GetPageQueryObject
     {
         public GetFlightsPageQueryObject(int offset, int limit)
         {

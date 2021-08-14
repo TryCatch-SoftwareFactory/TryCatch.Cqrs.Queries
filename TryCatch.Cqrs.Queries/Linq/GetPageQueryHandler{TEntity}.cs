@@ -15,19 +15,26 @@ namespace TryCatch.Cqrs.Queries.Linq
     /// Standard Get page query handler.
     /// </summary>
     /// <typeparam name="TEntity">Type of entity.</typeparam>
-    public abstract class GetPageQueryHandler<TEntity> : IQueryHandler<GetPageQueryObject<TEntity>, PageResult<TEntity>>
+    public abstract class GetPageQueryHandler<TEntity> : IQueryHandler<GetPageQueryObject, PageResult<TEntity>>
         where TEntity : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetPageQueryHandler{TEntity}"/> class.
         /// </summary>
         /// <param name="repository">A <see cref="ILinqQueryRepository{TEntity}"/> reference to the repository.</param>
+        /// <param name="factory">A <see cref="IQueryExpressionFactory{TEntity}"/> reference to the expression factory.</param>
         /// <param name="builder">A <see cref="IPageResultBuilder{TEntity}"/> reference to the result builder.</param>
-        protected GetPageQueryHandler(ILinqQueryRepository<TEntity> repository, IPageResultBuilder<TEntity> builder)
+        protected GetPageQueryHandler(
+            ILinqQueryRepository<TEntity> repository,
+            IQueryExpressionFactory<TEntity> factory,
+            IPageResultBuilder<TEntity> builder)
         {
             ArgumentsValidator.ThrowIfIsNull(repository, nameof(repository));
+            ArgumentsValidator.ThrowIfIsNull(factory, nameof(factory));
             ArgumentsValidator.ThrowIfIsNull(builder, nameof(builder));
+
             this.Repository = repository;
+            this.Factory = factory;
             this.Builder = builder;
         }
 
@@ -37,21 +44,26 @@ namespace TryCatch.Cqrs.Queries.Linq
         protected ILinqQueryRepository<TEntity> Repository { get; }
 
         /// <summary>
+        /// Gets the current expression factory.
+        /// </summary>
+        protected IQueryExpressionFactory<TEntity> Factory { get; }
+
+        /// <summary>
         /// Gets the current reference to the result builder.
         /// </summary>
         protected IPageResultBuilder<TEntity> Builder { get; }
 
         /// <inheritdoc/>
         public async Task<PageResult<TEntity>> Execute(
-            GetPageQueryObject<TEntity> queryObject,
+            GetPageQueryObject queryObject,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             ArgumentsValidator.ThrowIfIsNull(queryObject, nameof(queryObject));
 
-            var where = queryObject.GetQuery();
-            var orderBy = queryObject.GetOrderBy();
+            var where = this.Factory.GetSpec(queryObject);
+            var orderBy = this.Factory.GetSortSpec(queryObject);
 
             var countTask = this.Repository.GetCountAsync(cancellationToken: cancellationToken);
             var matchedTask = this.Repository.GetCountAsync(where, cancellationToken);

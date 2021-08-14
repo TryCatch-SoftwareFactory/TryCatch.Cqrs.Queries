@@ -11,8 +11,11 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Linq
 
     public class GetFlightsPageQueryHandler : GetPageQueryHandler<Flight>
     {
-        public GetFlightsPageQueryHandler(ILinqQueryRepository<Flight> repository, IPageResultBuilder<Flight> builder)
-            : base(repository, builder)
+        public GetFlightsPageQueryHandler(
+            ILinqQueryRepository<Flight> repository,
+            IFlightsQueryFactory factory,
+            IPageResultBuilder<Flight> builder)
+            : base(repository, factory, builder)
         {
         }
     }
