@@ -15,7 +15,7 @@ namespace TryCatch.Cqrs.Queries.Specs
     /// Standard Get page query handler.
     /// </summary>
     /// <typeparam name="TEntity">Type of entity.</typeparam>
-    public abstract class GetPageQueryHandler<TEntity> : IQueryHandler<GetPageQueryObject<TEntity>, PageResult<TEntity>>
+    public abstract class GetPageQueryHandler<TEntity> : IQueryHandler<GetPageQueryObject, PageResult<TEntity>>
         where TEntity : class
     {
         /// <summary>
@@ -55,7 +55,7 @@ namespace TryCatch.Cqrs.Queries.Specs
 
         /// <inheritdoc/>
         public async Task<PageResult<TEntity>> Execute(
-            GetPageQueryObject<TEntity> queryObject,
+            GetPageQueryObject queryObject,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

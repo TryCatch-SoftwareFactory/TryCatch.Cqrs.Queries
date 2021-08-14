@@ -5,18 +5,13 @@
 
 namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Linq
 {
-    using System;
-    using System.Linq.Expressions;
-
-    public class GetFlightQueryObject : QueryObjectBase<Flight>
+    public class GetFlightQueryObject
     {
-        private readonly string reference;
-
         public GetFlightQueryObject(string reference)
         {
-            this.reference = string.IsNullOrWhiteSpace(reference) ? string.Empty : reference;
+            this.Reference = string.IsNullOrWhiteSpace(reference) ? string.Empty : reference;
         }
 
-        public override Expression<Func<Flight, bool>> GetQuery() => (x) => x.Reference.Contains(this.reference);
+        public string Reference { get; }
     }
 }

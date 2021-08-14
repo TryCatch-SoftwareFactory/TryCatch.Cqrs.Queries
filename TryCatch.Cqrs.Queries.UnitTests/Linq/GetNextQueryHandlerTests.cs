@@ -18,6 +18,8 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
 
     public class GetNextQueryHandlerTests
     {
+        private readonly IFlightsQueryFactory factory;
+
         private readonly ILinqQueryRepository<Flight> repository;
 
         private readonly GetNextFlightsQueryHandler sut;
@@ -25,8 +27,8 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
         public GetNextQueryHandlerTests()
         {
             this.repository = Substitute.For<ILinqQueryRepository<Flight>>();
-
-            this.sut = new GetNextFlightsQueryHandler(this.repository);
+            this.factory = new FlightsQueryFactory();
+            this.sut = new GetNextFlightsQueryHandler(this.repository, this.factory);
         }
 
         [Fact]
@@ -36,7 +38,20 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
             ILinqQueryRepository<Flight> repository = null;
 
             // Act
-            Action act = () => _ = new GetNextFlightsQueryHandler(repository);
+            Action act = () => _ = new GetNextFlightsQueryHandler(repository, this.factory);
+
+            // Asserts
+            act.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void Construct_without_factory()
+        {
+            // Arrange
+            IFlightsQueryFactory factory = null;
+
+            // Act
+            Action act = () => _ = new GetNextFlightsQueryHandler(this.repository, factory);
 
             // Asserts
             act.Should().Throw<ArgumentNullException>();

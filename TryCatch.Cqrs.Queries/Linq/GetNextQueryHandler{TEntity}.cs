@@ -14,33 +14,44 @@ namespace TryCatch.Cqrs.Queries.Linq
     /// Standard get next page query handler.
     /// </summary>
     /// <typeparam name="TEntity">Type of entity.</typeparam>
-    public class GetNextQueryHandler<TEntity> : IQueryHandler<GetPageQueryObject<TEntity>, GetNextResult<TEntity>>
+    public class GetNextQueryHandler<TEntity> : IQueryHandler<GetPageQueryObject, GetNextResult<TEntity>>
         where TEntity : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetNextQueryHandler{TEntity}"/> class.
         /// </summary>
         /// <param name="repository">A <see cref="ILinqQueryRepository{TEntity}"/> reference to the current repository.</param>
-        public GetNextQueryHandler(ILinqQueryRepository<TEntity> repository)
+        /// <param name="factory">A <see cref="IQueryExpressionFactory{TEntity}"/> reference to the expression factory.</param>
+        public GetNextQueryHandler(ILinqQueryRepository<TEntity> repository, IQueryExpressionFactory<TEntity> factory)
         {
             ArgumentsValidator.ThrowIfIsNull(repository, nameof(repository));
+            ArgumentsValidator.ThrowIfIsNull(factory, nameof(factory));
 
             this.Repository = repository;
+            this.Factory = factory;
         }
 
+        /// <summary>
+        /// Gets the current reference to the repository.
+        /// </summary>
         protected ILinqQueryRepository<TEntity> Repository { get; }
+
+        /// <summary>
+        /// Gets the current expression factory.
+        /// </summary>
+        protected IQueryExpressionFactory<TEntity> Factory { get; }
 
         /// <inheritdoc/>
         public async Task<GetNextResult<TEntity>> Execute(
-            GetPageQueryObject<TEntity> queryObject,
+            GetPageQueryObject queryObject,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             ArgumentsValidator.ThrowIfIsNull(queryObject, nameof(queryObject));
 
-            var where = queryObject.GetQuery();
-            var orderBy = queryObject.GetOrderBy();
+            var where = this.Factory.GetSpec(queryObject);
+            var orderBy = this.Factory.GetSortSpec(queryObject);
 
             var items = await this.Repository
                 .GetPageAsync(

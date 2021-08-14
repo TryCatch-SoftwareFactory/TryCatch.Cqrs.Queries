@@ -20,6 +20,8 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
 
     public class GetEntityQueryHandlerTests
     {
+        private readonly IFlightsQueryFactory factory;
+
         private readonly ILinqQueryRepository<Flight> repository;
 
         private readonly IResultBuilder<Flight> builder;
@@ -29,8 +31,9 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
         public GetEntityQueryHandlerTests()
         {
             this.repository = Substitute.For<ILinqQueryRepository<Flight>>();
+            this.factory = new FlightsQueryFactory();
             this.builder = new ResultBuilder<Flight>();
-            this.sut = new GetFlightQueryHandler(this.repository, this.builder);
+            this.sut = new GetFlightQueryHandler(this.repository, this.factory, this.builder);
         }
 
         [Fact]
@@ -40,7 +43,20 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
             ILinqQueryRepository<Flight> repository = null;
 
             // Act
-            Action act = () => _ = new GetFlightQueryHandler(repository, this.builder);
+            Action act = () => _ = new GetFlightQueryHandler(repository, this.factory, this.builder);
+
+            // Asserts
+            act.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void Construct_without_factory()
+        {
+            // Arrange
+            IFlightsQueryFactory factory = null;
+
+            // Act
+            Action act = () => _ = new GetFlightQueryHandler(this.repository, factory, this.builder);
 
             // Asserts
             act.Should().Throw<ArgumentNullException>();
@@ -53,7 +69,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
             IResultBuilder<Flight> builder = null;
 
             // Act
-            Action act = () => _ = new GetFlightQueryHandler(this.repository, builder);
+            Action act = () => _ = new GetFlightQueryHandler(this.repository, this.factory, builder);
 
             // Asserts
             act.Should().Throw<ArgumentNullException>();

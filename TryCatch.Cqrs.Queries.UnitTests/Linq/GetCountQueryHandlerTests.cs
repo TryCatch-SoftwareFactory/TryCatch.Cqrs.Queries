@@ -19,6 +19,8 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
 
     public class GetCountQueryHandlerTests
     {
+        private readonly IFlightsQueryFactory factory;
+
         private readonly ILinqQueryRepository<Flight> repository;
 
         private readonly IResultBuilder<long> builder;
@@ -28,8 +30,9 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
         public GetCountQueryHandlerTests()
         {
             this.repository = Substitute.For<ILinqQueryRepository<Flight>>();
+            this.factory = new FlightsQueryFactory();
             this.builder = new ResultBuilder<long>();
-            this.sut = new GetFlightsCountQueryHandler(this.repository, this.builder);
+            this.sut = new GetFlightsCountQueryHandler(this.repository, this.factory, this.builder);
         }
 
         [Fact]
@@ -39,7 +42,20 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
             ILinqQueryRepository<Flight> repository = null;
 
             // Act
-            Action act = () => _ = new GetFlightsCountQueryHandler(repository, this.builder);
+            Action act = () => _ = new GetFlightsCountQueryHandler(repository, this.factory, this.builder);
+
+            // Asserts
+            act.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void Construct_without_factory()
+        {
+            // Arrange
+            IFlightsQueryFactory factory = null;
+
+            // Act
+            Action act = () => _ = new GetFlightsCountQueryHandler(this.repository, factory, this.builder);
 
             // Asserts
             act.Should().Throw<ArgumentNullException>();
@@ -52,7 +68,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
             IResultBuilder<long> builder = null;
 
             // Act
-            Action act = () => _ = new GetFlightsCountQueryHandler(this.repository, builder);
+            Action act = () => _ = new GetFlightsCountQueryHandler(this.repository, this.factory, builder);
 
             // Asserts
             act.Should().Throw<ArgumentNullException>();

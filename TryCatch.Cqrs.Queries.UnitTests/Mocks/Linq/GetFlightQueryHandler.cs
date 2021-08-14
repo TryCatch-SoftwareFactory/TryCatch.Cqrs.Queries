@@ -9,10 +9,13 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Linq
     using TryCatch.Patterns.Repositories;
     using TryCatch.Patterns.Results;
 
-    public class GetFlightQueryHandler : GetEntityQueryHandler<Flight>
+    public class GetFlightQueryHandler : GetEntityQueryHandler<Flight, GetFlightQueryObject>
     {
-        public GetFlightQueryHandler(ILinqQueryRepository<Flight> repository, IResultBuilder<Flight> builder)
-            : base(repository, builder)
+        public GetFlightQueryHandler(
+            ILinqQueryRepository<Flight> repository,
+            IFlightsQueryFactory factory,
+            IResultBuilder<Flight> builder)
+            : base(repository, factory, builder)
         {
         }
     }

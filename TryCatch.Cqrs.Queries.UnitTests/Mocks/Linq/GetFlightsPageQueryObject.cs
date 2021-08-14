@@ -5,20 +5,18 @@
 
 namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Linq
 {
-    using System;
-    using System.Linq.Expressions;
+    using TryCatch.Cqrs.Queries.Linq;
 
-    public class GetFlightsPageQueryObject : GetPageQueryObject<Flight>
+    public class GetFlightsPageQueryObject : GetPageQueryObject
     {
-        public GetFlightsPageQueryObject(int offset, int limit)
+        public GetFlightsPageQueryObject(int offset, int limit, string reference = "")
         {
             this.Limit = limit;
             this.Offset = offset;
+            this.Reference = reference;
         }
 
-        public override Expression<Func<Flight, object>> GetOrderBy() => (x) => x.Reference;
-
-        public override Expression<Func<Flight, bool>> GetQuery() => (x) => true;
+        public string Reference { get; }
 
         public override bool SortAsAscending() => true;
     }
