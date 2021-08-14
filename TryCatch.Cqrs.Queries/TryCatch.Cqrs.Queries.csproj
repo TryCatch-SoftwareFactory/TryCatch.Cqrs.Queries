@@ -13,6 +13,7 @@
     <RepositoryUrl>https://github.com/TryCatch-SoftwareFactory/TryCatch.Cqrs.Queries.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>cqrs .netcore cqrs-pattern cqrs-queries</PackageTags>
+    <PackageId>TryCatch.Cqrs.Lightweight.Queries</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
