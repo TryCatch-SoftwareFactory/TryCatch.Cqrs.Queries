@@ -23,7 +23,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Specs
     {
         private readonly ISpecQueryRepository<Flight> repository;
 
-        private readonly ISpecFactory<Flight> factory;
+        private readonly ISpecificationFactory<Flight> factory;
 
         private readonly IResultBuilder<Flight> builder;
 
@@ -54,7 +54,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Specs
         public void Construct_without_factory()
         {
             // Arrange
-            ISpecFactory<Flight> factory = null;
+            ISpecificationFactory<Flight> factory = null;
 
             // Act
             Action act = () => _ = new GetFlightQueryHandler(this.repository, factory, this.builder);

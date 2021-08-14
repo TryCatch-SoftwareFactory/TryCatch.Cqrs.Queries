@@ -7,6 +7,7 @@ namespace TryCatch.Cqrs.Queries.Linq
 {
     using System.Threading;
     using System.Threading.Tasks;
+    using TryCatch.Patterns;
     using TryCatch.Patterns.Repositories;
     using TryCatch.Patterns.Results;
     using TryCatch.Validators;
@@ -24,11 +25,11 @@ namespace TryCatch.Cqrs.Queries.Linq
         /// Initializes a new instance of the <see cref="GetCountQueryHandler{TEntity, TQueryObject}"/> class.
         /// </summary>
         /// <param name="repository">A <see cref="ILinqQueryRepository{TEntity}"/> reference to the repository.</param>
-        /// <param name="factory">A <see cref="IQueryExpressionFactory{TEntity}"/> reference to the expression factory.</param>
+        /// <param name="factory">A <see cref="IExpressionFactory{TEntity}"/> reference to the expression factory.</param>
         /// <param name="builder">A <see cref="IResultBuilder{long}"/> reference to the result builder.</param>
         protected GetCountQueryHandler(
             ILinqQueryRepository<TEntity> repository,
-            IQueryExpressionFactory<TEntity> factory,
+            IExpressionFactory<TEntity> factory,
             IResultBuilder<long> builder)
         {
             ArgumentsValidator.ThrowIfIsNull(repository, nameof(repository));
@@ -47,7 +48,7 @@ namespace TryCatch.Cqrs.Queries.Linq
         /// <summary>
         /// Gets the current expression factory.
         /// </summary>
-        protected IQueryExpressionFactory<TEntity> Factory { get; }
+        protected IExpressionFactory<TEntity> Factory { get; }
 
         /// <summary>
         /// Gets the current reference to the result builder.
@@ -63,7 +64,7 @@ namespace TryCatch.Cqrs.Queries.Linq
 
             ArgumentsValidator.ThrowIfIsNull(queryObject, nameof(queryObject));
 
-            var where = this.Factory.GetSpec(queryObject);
+            var where = this.Factory.GetExpression(queryObject);
 
             var count = await this.Repository
                 .GetCountAsync(where, cancellationToken)

@@ -10,19 +10,19 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Linq
 
     public class FlightsQueryFactory : IFlightsQueryFactory
     {
-        public Expression<Func<Flight, object>> GetSortSpec<TQueryObject>(TQueryObject queryObject)
+        public Expression<Func<Flight, object>> GetSortExpression<TQueryObject>(TQueryObject filterObject)
         {
             Expression<Func<Flight, object>> sortAs = x => x.Reference;
 
-            if (queryObject is GetFlightsCountQueryObject op1)
+            if (filterObject is GetFlightsCountQueryObject op1)
             {
                 sortAs = x => x.Reference;
             }
-            else if (queryObject is GetFlightQueryObject op2)
+            else if (filterObject is GetFlightQueryObject op2)
             {
                 sortAs = x => x.Reference;
             }
-            else if (queryObject is GetFlightsPageQueryObject op3)
+            else if (filterObject is GetFlightsPageQueryObject op3)
             {
                 sortAs = x => x.Reference;
             }
@@ -30,19 +30,19 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Linq
             return sortAs;
         }
 
-        public Expression<Func<Flight, bool>> GetSpec<TQueryObject>(TQueryObject queryObject)
+        public Expression<Func<Flight, bool>> GetExpression<TQueryObject>(TQueryObject filterObject)
         {
             Expression<Func<Flight, bool>> where = x => true;
 
-            if (queryObject is GetFlightsCountQueryObject op1)
+            if (filterObject is GetFlightsCountQueryObject op1)
             {
                 where = x => x.Reference.Contains(op1.Reference);
             }
-            else if (queryObject is GetFlightQueryObject op2)
+            else if (filterObject is GetFlightQueryObject op2)
             {
                 where = x => x.Reference.Contains(op2.Reference);
             }
-            else if (queryObject is GetFlightsPageQueryObject op3)
+            else if (filterObject is GetFlightsPageQueryObject op3)
             {
                 where = x => x.Reference.Contains(op3.Reference);
             }

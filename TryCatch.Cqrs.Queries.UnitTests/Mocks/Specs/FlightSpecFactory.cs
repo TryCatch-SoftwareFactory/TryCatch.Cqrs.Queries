@@ -5,13 +5,12 @@
 
 namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Specs
 {
-    using TryCatch.Cqrs.Queries.Specs;
     using TryCatch.Patterns.Specifications;
 
-    public class FlightSpecFactory : ISpecFactory<Flight>
+    public class FlightSpecFactory : ISpecificationFactory<Flight>
     {
-        public ISortSpecification<Flight> GetSortSpec<TQueryObject>(TQueryObject queryObject) => new SortFlightsSpec();
+        public ISortSpecification<Flight> GetSortSpecification<TQueryObject>(TQueryObject filterObject) => new SortFlightsSpec();
 
-        public ISpecification<Flight> GetSpec<TQueryObject>(TQueryObject queryObject) => new FilterFlightsSpec();
+        public ISpecification<Flight> GetSpecification<TQueryObject>(TQueryObject filterObject) => new FilterFlightsSpec();
     }
 }

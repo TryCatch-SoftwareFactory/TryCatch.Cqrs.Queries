@@ -8,12 +8,13 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Specs
     using TryCatch.Cqrs.Queries.Specs;
     using TryCatch.Patterns.Repositories;
     using TryCatch.Patterns.Results;
+    using TryCatch.Patterns.Specifications;
 
     public class GetFlightQueryHandler : GetEntityQueryHandler<Flight, GetFlightQueryObject>
     {
         public GetFlightQueryHandler(
             ISpecQueryRepository<Flight> repository,
-            ISpecFactory<Flight> factory,
+            ISpecificationFactory<Flight> factory,
             IResultBuilder<Flight> builder)
             : base(repository, factory, builder)
         {
