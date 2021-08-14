@@ -111,7 +111,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
                 .GetCountAsync(null, Arg.Any<CancellationToken>())
                 .Returns(count);
 
-            var query = this.factory.GetSpec(queryObject);
+            var query = this.factory.GetExpression(queryObject);
 
             this.repository
                 .GetCountAsync(

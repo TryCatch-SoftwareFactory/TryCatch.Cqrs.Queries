@@ -7,6 +7,7 @@ namespace TryCatch.Cqrs.Queries.Linq
 {
     using System.Threading;
     using System.Threading.Tasks;
+    using TryCatch.Patterns;
     using TryCatch.Patterns.Repositories;
     using TryCatch.Validators;
 
@@ -21,8 +22,8 @@ namespace TryCatch.Cqrs.Queries.Linq
         /// Initializes a new instance of the <see cref="GetNextQueryHandler{TEntity}"/> class.
         /// </summary>
         /// <param name="repository">A <see cref="ILinqQueryRepository{TEntity}"/> reference to the current repository.</param>
-        /// <param name="factory">A <see cref="IQueryExpressionFactory{TEntity}"/> reference to the expression factory.</param>
-        public GetNextQueryHandler(ILinqQueryRepository<TEntity> repository, IQueryExpressionFactory<TEntity> factory)
+        /// <param name="factory">A <see cref="IExpressionFactory{TEntity}"/> reference to the expression factory.</param>
+        public GetNextQueryHandler(ILinqQueryRepository<TEntity> repository, IExpressionFactory<TEntity> factory)
         {
             ArgumentsValidator.ThrowIfIsNull(repository, nameof(repository));
             ArgumentsValidator.ThrowIfIsNull(factory, nameof(factory));
@@ -39,7 +40,7 @@ namespace TryCatch.Cqrs.Queries.Linq
         /// <summary>
         /// Gets the current expression factory.
         /// </summary>
-        protected IQueryExpressionFactory<TEntity> Factory { get; }
+        protected IExpressionFactory<TEntity> Factory { get; }
 
         /// <inheritdoc/>
         public async Task<GetNextResult<TEntity>> Execute(
@@ -50,8 +51,8 @@ namespace TryCatch.Cqrs.Queries.Linq
 
             ArgumentsValidator.ThrowIfIsNull(queryObject, nameof(queryObject));
 
-            var where = this.Factory.GetSpec(queryObject);
-            var orderBy = this.Factory.GetSortSpec(queryObject);
+            var where = this.Factory.GetExpression(queryObject);
+            var orderBy = this.Factory.GetSortExpression(queryObject);
 
             var items = await this.Repository
                 .GetPageAsync(

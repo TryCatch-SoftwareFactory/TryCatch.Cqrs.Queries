@@ -9,6 +9,7 @@ namespace TryCatch.Cqrs.Queries.Specs
     using System.Threading.Tasks;
     using TryCatch.Patterns.Repositories;
     using TryCatch.Patterns.Results;
+    using TryCatch.Patterns.Specifications;
     using TryCatch.Validators;
 
     /// <summary>
@@ -22,11 +23,11 @@ namespace TryCatch.Cqrs.Queries.Specs
         /// Initializes a new instance of the <see cref="GetPageQueryHandler{TEntity}"/> class.
         /// </summary>
         /// <param name="repository">A <see cref="ISpecQueryRepository{TEntity}"/> reference to the repository.</param>
-        /// <param name="factory">A <see cref="ISpecFactory{TEntity}"/> reference to the specs factory.</param>
+        /// <param name="factory">A <see cref="ISpecificationFactory{TEntity}"/> reference to the specs factory.</param>
         /// <param name="builder">A <see cref="IPageResultBuilder{TEntity}"/> reference to the result builder.</param>
         protected GetPageQueryHandler(
             ISpecQueryRepository<TEntity> repository,
-            ISpecFactory<TEntity> factory,
+            ISpecificationFactory<TEntity> factory,
             IPageResultBuilder<TEntity> builder)
         {
             ArgumentsValidator.ThrowIfIsNull(repository, nameof(repository));
@@ -46,7 +47,7 @@ namespace TryCatch.Cqrs.Queries.Specs
         /// <summary>
         /// Gets the current specifications factory.
         /// </summary>
-        protected ISpecFactory<TEntity> Factory { get; }
+        protected ISpecificationFactory<TEntity> Factory { get; }
 
         /// <summary>
         /// Gets the current reference to the result builder.
@@ -62,8 +63,8 @@ namespace TryCatch.Cqrs.Queries.Specs
 
             ArgumentsValidator.ThrowIfIsNull(queryObject, nameof(queryObject));
 
-            var where = this.Factory.GetSpec(queryObject);
-            var orderBy = this.Factory.GetSortSpec(queryObject);
+            var where = this.Factory.GetSpecification(queryObject);
+            var orderBy = this.Factory.GetSortSpecification(queryObject);
 
             var countTask = this.Repository.GetCountAsync(cancellationToken: cancellationToken);
             var matchedTask = this.Repository.GetCountAsync(where, cancellationToken);

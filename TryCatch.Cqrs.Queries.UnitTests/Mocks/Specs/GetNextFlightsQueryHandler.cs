@@ -7,10 +7,11 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Specs
 {
     using TryCatch.Cqrs.Queries.Specs;
     using TryCatch.Patterns.Repositories;
+    using TryCatch.Patterns.Specifications;
 
     public class GetNextFlightsQueryHandler : GetNextQueryHandler<Flight>
     {
-        public GetNextFlightsQueryHandler(ISpecQueryRepository<Flight> repository, ISpecFactory<Flight> factory)
+        public GetNextFlightsQueryHandler(ISpecQueryRepository<Flight> repository, ISpecificationFactory<Flight> factory)
             : base(repository, factory)
         {
         }

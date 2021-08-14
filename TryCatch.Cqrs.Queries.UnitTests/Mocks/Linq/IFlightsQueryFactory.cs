@@ -5,9 +5,9 @@
 
 namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Linq
 {
-    using TryCatch.Cqrs.Queries.Linq;
+    using TryCatch.Patterns;
 
-    public interface IFlightsQueryFactory : IQueryExpressionFactory<Flight>
+    public interface IFlightsQueryFactory : IExpressionFactory<Flight>
     {
     }
 }

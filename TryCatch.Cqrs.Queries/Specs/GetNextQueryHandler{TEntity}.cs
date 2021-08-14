@@ -8,6 +8,7 @@ namespace TryCatch.Cqrs.Queries.Specs
     using System.Threading;
     using System.Threading.Tasks;
     using TryCatch.Patterns.Repositories;
+    using TryCatch.Patterns.Specifications;
     using TryCatch.Validators;
 
     /// <summary>
@@ -21,8 +22,8 @@ namespace TryCatch.Cqrs.Queries.Specs
         /// Initializes a new instance of the <see cref="GetNextQueryHandler{TEntity}"/> class.
         /// </summary>
         /// <param name="repository">A <see cref="ISpecQueryRepository{TEntity}"/> reference to the current repository.</param>
-        /// <param name="factory">A <see cref="ISpecFactory{TEntity}"/> reference to the specs factory.</param>
-        public GetNextQueryHandler(ISpecQueryRepository<TEntity> repository, ISpecFactory<TEntity> factory)
+        /// <param name="factory">A <see cref="ISpecificationFactory{TEntity}"/> reference to the specs factory.</param>
+        public GetNextQueryHandler(ISpecQueryRepository<TEntity> repository, ISpecificationFactory<TEntity> factory)
         {
             ArgumentsValidator.ThrowIfIsNull(repository, nameof(repository));
             ArgumentsValidator.ThrowIfIsNull(factory, nameof(factory));
@@ -39,7 +40,7 @@ namespace TryCatch.Cqrs.Queries.Specs
         /// <summary>
         /// Gets the current specifications factory.
         /// </summary>
-        protected ISpecFactory<TEntity> Factory { get; }
+        protected ISpecificationFactory<TEntity> Factory { get; }
 
         /// <inheritdoc/>
         public async Task<GetNextResult<TEntity>> Execute(
@@ -50,8 +51,8 @@ namespace TryCatch.Cqrs.Queries.Specs
 
             ArgumentsValidator.ThrowIfIsNull(queryObject, nameof(queryObject));
 
-            var where = this.Factory.GetSpec(queryObject);
-            var orderBy = this.Factory.GetSortSpec(queryObject);
+            var where = this.Factory.GetSpecification(queryObject);
+            var orderBy = this.Factory.GetSortSpecification(queryObject);
 
             var items = await this.Repository
                 .GetPageAsync(

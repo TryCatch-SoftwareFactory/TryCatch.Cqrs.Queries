@@ -22,7 +22,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Specs
     {
         private readonly ISpecQueryRepository<Flight> repository;
 
-        private readonly ISpecFactory<Flight> factory;
+        private readonly ISpecificationFactory<Flight> factory;
 
         private readonly IPageResultBuilder<Flight> builder;
 
@@ -53,7 +53,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Specs
         public void Construct_without_factory()
         {
             // Arrange
-            ISpecFactory<Flight> factory = null;
+            ISpecificationFactory<Flight> factory = null;
 
             // Act
             Action act = () => _ = new GetFlightsPageQueryHandler(this.repository, factory, this.builder);
@@ -113,7 +113,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Specs
 
             this.repository
                 .GetCountAsync(
-                    this.factory.GetSpec(queryObject),
+                    this.factory.GetSpecification(queryObject),
                     Arg.Any<CancellationToken>())
                 .Returns(matched);
 
