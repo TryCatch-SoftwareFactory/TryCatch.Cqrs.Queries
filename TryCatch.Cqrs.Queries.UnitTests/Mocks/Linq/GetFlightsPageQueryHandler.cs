@@ -9,7 +9,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Linq
     using TryCatch.Patterns.Repositories;
     using TryCatch.Patterns.Results;
 
-    public class GetFlightsPageQueryHandler : GetPageQueryHandler<Flight>
+    public class GetFlightsPageQueryHandler : GetPageQueryHandler<Flight, GetFlightsPageQueryObject>, IGetFlightsPageQueryHandler
     {
         public GetFlightsPageQueryHandler(
             ILinqQueryRepository<Flight> repository,

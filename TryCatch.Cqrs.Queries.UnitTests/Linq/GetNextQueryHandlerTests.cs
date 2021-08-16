@@ -22,7 +22,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
 
         private readonly ILinqQueryRepository<Flight> repository;
 
-        private readonly GetNextFlightsQueryHandler sut;
+        private readonly IGetNextFlightsQueryHandler sut;
 
         public GetNextQueryHandlerTests()
         {

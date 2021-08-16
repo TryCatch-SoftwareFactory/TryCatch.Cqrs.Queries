@@ -25,7 +25,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
 
         private readonly IResultBuilder<long> builder;
 
-        private readonly GetFlightsCountQueryHandler sut;
+        private readonly IGetFlightsCountQueryHandler sut;
 
         public GetCountQueryHandlerTests()
         {

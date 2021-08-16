@@ -10,7 +10,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Specs
     using TryCatch.Patterns.Results;
     using TryCatch.Patterns.Specifications;
 
-    public class GetFlightsPageQueryHandler : GetPageQueryHandler<Flight>
+    public class GetFlightsPageQueryHandler : GetPageQueryHandler<Flight, GetFlightsPageQueryObject>, IGetFlightsPageQueryHandler
     {
         public GetFlightsPageQueryHandler(
             ISpecQueryRepository<Flight> repository,

@@ -10,7 +10,6 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Specs
     using System.Threading.Tasks;
     using FluentAssertions;
     using NSubstitute;
-    using TryCatch.Cqrs.Queries.Specs;
     using TryCatch.Cqrs.Queries.UnitTests.Mocks;
     using TryCatch.Cqrs.Queries.UnitTests.Mocks.Specs;
     using TryCatch.Patterns.Repositories;
@@ -26,7 +25,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Specs
 
         private readonly IPageResultBuilder<Flight> builder;
 
-        private readonly GetFlightsPageQueryHandler sut;
+        private readonly IGetFlightsPageQueryHandler sut;
 
         public GetPageQueryHandlerTests()
         {
