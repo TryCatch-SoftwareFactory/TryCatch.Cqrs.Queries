@@ -1,4 +1,4 @@
-﻿// <copyright file="GetPageQueryHandler{TEntity}.cs" company="TryCatch Software Factory">
+﻿// <copyright file="GetPageQueryHandler{TEntity,TQueryObject}.cs" company="TryCatch Software Factory">
 // Copyright © TryCatch Software Factory All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 // </copyright>
@@ -16,11 +16,13 @@ namespace TryCatch.Cqrs.Queries.Linq
     /// Standard Get page query handler.
     /// </summary>
     /// <typeparam name="TEntity">Type of entity.</typeparam>
-    public abstract class GetPageQueryHandler<TEntity> : IQueryHandler<GetPageQueryObject, PageResult<TEntity>>
+    /// <typeparam name="TQueryObject">Type of query object.</typeparam>
+    public abstract class GetPageQueryHandler<TEntity, TQueryObject> : IQueryHandler<TQueryObject, PageResult<TEntity>>
         where TEntity : class
+        where TQueryObject : GetPageQueryObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GetPageQueryHandler{TEntity}"/> class.
+        /// Initializes a new instance of the <see cref="GetPageQueryHandler{TEntity,TQueryObject}"/> class.
         /// </summary>
         /// <param name="repository">A <see cref="ILinqQueryRepository{TEntity}"/> reference to the repository.</param>
         /// <param name="factory">A <see cref="IExpressionFactory{TEntity}"/> reference to the expression factory.</param>
@@ -56,7 +58,7 @@ namespace TryCatch.Cqrs.Queries.Linq
 
         /// <inheritdoc/>
         public async Task<PageResult<TEntity>> Execute(
-            GetPageQueryObject queryObject,
+            TQueryObject queryObject,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

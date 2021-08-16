@@ -26,7 +26,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
 
         private readonly IResultBuilder<Flight> builder;
 
-        private readonly GetFlightQueryHandler sut;
+        private readonly IGetFlightQueryHandler sut;
 
         public GetEntityQueryHandlerTests()
         {

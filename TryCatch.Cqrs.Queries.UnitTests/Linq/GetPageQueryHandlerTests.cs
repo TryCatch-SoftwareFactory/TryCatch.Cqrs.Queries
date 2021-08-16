@@ -25,7 +25,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Linq
 
         private readonly IPageResultBuilder<Flight> builder;
 
-        private readonly GetFlightsPageQueryHandler sut;
+        private readonly IGetFlightsPageQueryHandler sut;
 
         public GetPageQueryHandlerTests()
         {

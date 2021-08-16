@@ -9,7 +9,7 @@ namespace TryCatch.Cqrs.Queries.UnitTests.Mocks.Linq
     using TryCatch.Patterns.Repositories;
     using TryCatch.Patterns.Results;
 
-    public class GetFlightsCountQueryHandler : GetCountQueryHandler<Flight, GetFlightsCountQueryObject>
+    public class GetFlightsCountQueryHandler : GetCountQueryHandler<Flight, GetFlightsCountQueryObject>, IGetFlightsCountQueryHandler
     {
         public GetFlightsCountQueryHandler(
             ILinqQueryRepository<Flight> repository,
