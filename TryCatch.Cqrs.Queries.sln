@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{71EF6550
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{547BF909-6972-498D-872E-E04B14355A1D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TryCatch.Cqrs.Queries", "TryCatch.Cqrs.Queries\TryCatch.Cqrs.Queries.csproj", "{DA938073-1CE8-4380-AA9A-DAB26564FC10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TryCatch.Cqrs.Queries", "src\TryCatch.Cqrs.Queries\TryCatch.Cqrs.Queries.csproj", "{DA938073-1CE8-4380-AA9A-DAB26564FC10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TryCatch.Cqrs.Queries.UnitTests", "TryCatch.Cqrs.Queries.UnitTests\TryCatch.Cqrs.Queries.UnitTests.csproj", "{F4C31BAE-3E4E-4F08-9A34-E154AFC4A4E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TryCatch.Cqrs.Queries.UnitTests", "tests\TryCatch.Cqrs.Queries.UnitTests\TryCatch.Cqrs.Queries.UnitTests.csproj", "{F4C31BAE-3E4E-4F08-9A34-E154AFC4A4E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
